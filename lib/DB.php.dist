@@ -2,13 +2,14 @@
 
 class DB{
 	//Tietokannan tunnukset:
-	private	$user = "root";
-	private	$passwd = "qwerty";
+	private	$user = "";
+	private	$passwd = "";
+	private $host = "";
 	private $conn;
 
 	public function __construct() {
 		//open connection
-		$this->conn = new PDO("mysql:host=127.0.0.1;port=8889;dbname=tsoha",
+		$this->conn = new PDO("mysql:host=$this->host;dbname=tsoha",
 								$this->user,
 								$this->passwd);
 
