@@ -1,3 +1,29 @@
+https://help.ubuntu.com/community/ApacheMySQLPHP
+
+DB: 185.20.136.223
+Elserver1: 185.20.137.115
+Elserver2: 185.20.137.199
+
+
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+
+Apache
+
+sudo a2dissite default && sudo a2ensite Tsoha
+
+sudo /etc/init.d/apache2 restart
+
+/etc/apache2/sites-available/
+
+
+sudo apt-get install php5-mysql
+
+
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
 MYSQL tut
 
 
