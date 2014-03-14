@@ -1,5 +1,4 @@
-
-<h1>Listaelementtitesti</h1>
+<h4>Listaelementtitesti</h4>
 <ul>
 <?php foreach($data->lista as $asia) { ?>
   <li><?php echo $asia; ?></li>
