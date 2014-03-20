@@ -4,25 +4,31 @@
 		<title>HR-Manager</title>
 		<meta charset="utf-8" />
 		<!--<link href="./assets/css/layout.css">-->
-		<link rel="stylesheet" type="text/css" href="../assets/css/layout.css">
+		<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
 	</head>
 	<body>
 	  	<header>
-	            <h1>Welcome to HR-Manager</h1>
+	  		<nav class="navbar navbar-default" role="navigation">
+		  		<div class="container-fluid">
+		  			<div class="navbar-header">
+		  				<a class="navbar-brand" href="/">HR-Manager</a>
+		  			</div>
+		  		
+			        <ul class="nav navbar-nav">
+			            <li><a href="/userlist/">Userlist</a></li>
+			            <li><a href="/hours/">Hours</a></li>
+			            <li><a href="">Services</a></li>
+			            <li><a href="">Contact us</a></li>
+			        </ul>
+		        </div>
+			</nav>
 	    </header>
 	  	
-	  	<nav>
-	        <ul class="fancyNav">
-	            <li><a href="/index.php">Index</a></li>
-	            <li><a href="/userlist.php">Userlist</a></li>
-	            <li><a href="">About us</a></li>
-	            <li><a href="">Services</a></li>
-	            <li><a href="">Contact us</a></li>
-	        </ul>
-		</nav>
-
-	  	<!-- liitä sisältö -->
-		<?php require 'views/'.$sivu; ?>
+		  	
+	    <div class="container">
+		  	<!-- liitä sisältö -->
+			<?php require 'views/'.$sivu; ?>
+		</div >
 
 		<footer>
 			<hr>

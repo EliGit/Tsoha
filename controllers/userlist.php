@@ -1,15 +1,16 @@
 <?php
-require 'lib/User.php';
-require 'lib/DB.php';
-require 'lib/webutils.php';
+/*
+require '/lib/User.php';
+require '../lib/DB.php';
+require '../lib/webutils.php';
+*/
 
-
-$db = new DB();
+//$db = new DB();
 
 function getUsers() {
   global $db;
   $sql = "SELECT id, name, password FROM users";
-  $query = $db->getConn()->prepare($sql); 
+  $query = $db->getConn()->prepare($sql);
   $query->execute();
     
   $tulokset = array();
