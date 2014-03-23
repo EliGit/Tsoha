@@ -3,7 +3,7 @@
 <div class="container">
 	<ul>
 	<?php foreach($data->lista as $asia) { ?>
-	  <li><?php echo $asia; ?></li>
+	  <li><?php echo $asia; ?> | <a href="#">Käyttäjän sivulle</a></li>
 	<?php } ?>
 	</ul>
 </div>
