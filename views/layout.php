@@ -15,10 +15,10 @@
 		  			</div>
 		  		
 			        <ul class="nav navbar-nav">
-			            <li><a href="/userlist/">Userlist</a></li>
-			            <li><a href="/hours/">Hours</a></li>
-			            <li><a href="">Services</a></li>
-			            <li><a href="">Contact us</a></li>
+			            <li><a href="/users/">Käyttäjähallinta</a></li>
+			            <li><a href="/hours/">Asiakastunnit</a></li>
+			            <li><a href="/users/1">Käyttäjä</a></li>
+			            <li><a href="/report/">Yleisraportti</a></li>
 			        </ul>
 		        </div>
 			</nav>

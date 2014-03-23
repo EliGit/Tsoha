@@ -1,4 +1,10 @@
-<h1>Ty&ouml;tuntikirjanpito</h1>
+<h1>Asiakkaille laskutettavat tunnit</h1>
+
+<p>
+Tässä näkyy asiakkaille laskutettavat tunnit, tekijät kenttä voi sisältää pilkulla eroteltuna useamman käyttäjän.
+Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämän näkymän osalta, mutta validointeja ei toistaiseksi ole.
+
+</p>
 
 <form action="/hours/add" method="post">
 
@@ -12,7 +18,7 @@
 			<th>Tunnit 8-17</th>
 			<th>Tunnit 17-8</th>
 			<th>Laskutettu</th>
-			<th>Poista</th>
+			<th>Arkistoi</th>
 		</tr>
 	
 	<?

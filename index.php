@@ -35,10 +35,19 @@ function add_hours() {
 
 
 
+// ROUTING
+require 'controllers/hours.php';
+require 'controllers/users.php';
+require 'controllers/report.php';
+
+
 if($ru == '/') { render('index.php', array());}
 elseif(preg_match('/^\/hours\/add/',$ru)) { add_hours(); }
-elseif(preg_match('/^\/hours/',$ru)) { require 'controllers/hours.php'; }
-elseif(preg_match('/^\/userlist/',$ru)) { require 'controllers/userlist.php'; }
+elseif(preg_match('/^\/hours/',$ru)) { CustomerHours::render(); }
+elseif(preg_match('/^\/users\/1/',$ru)) { Users::show(); }
+elseif(preg_match('/^\/users/',$ru)) { Users::index();  }
+elseif(preg_match('/^\/report/',$ru)) { Report::render();  }
+elseif(preg_match('/^\/test/',$ru)) { require 'connectionTest.php';  }
 else{ echo "404"; }
 //else { show_404(); }
 
