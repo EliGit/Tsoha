@@ -18,7 +18,7 @@ Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämä
 			<th>Tunnit 8-17</th>
 			<th>Tunnit 17-8</th>
 			<th>Laskutettu</th>
-			<th>Arkistoi</th>
+			<th>Edit</th>
 		</tr>
 	
 	<?
@@ -46,8 +46,7 @@ Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämä
 			<td><?echo ($h['hours']?$h['hours']:'')?></td>
 			<td><?echo ($h['offhours']?$h['offhours']:'')?></td>
 			<td>ei</td>
-			<td><button type="button" class="btn btn-danger">x</button></td>
-			<!--<td><a style="color: black; text-decoration: none;" href="/hours/delete/<?echo $h['id']?>"><span class="icon-trash"></span></a></td>-->
+			<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
 		</tr>
 		
 		
@@ -69,5 +68,42 @@ Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämä
 		</tr>
 	</table>
 </div>
+
+
+<!-- Modal WorkHour Edit-->
+	<div class="modal fade" id="modalHour" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Muokkaa tietoja</h4>
+	      </div>
+	      <div class="modal-body">
+	        <table class="table">
+				<thead><h3>Asiakaslaskutus</h3></thead>
+				<tr><td>Päivä:</td><td>2014-01-01</td></tr>
+				<tr><td>Asiakas:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
+				<tr><td>Tekijät:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
+				<tr><td>Kuvaus:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
+				<tr><td>Tunnit 8-17:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
+				<tr><td>Tunnit 17-8:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
+				<tr><td>Laskutettu:</td><td><input type="checkbox"></td></tr>
+			</table>			
+	      </div>
+	      <div class="modal-footer">
+	      	<form class="form-inline" role="form">	      		
+	      		<div class="form-group">
+    				<label class="sr-only" for="exampleInputPassword2">Password</label>
+    				<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+  				</div>
+  				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      		<button type="button" class="btn btn-danger">Delete</button>
+	        	<button type="button" class="btn btn-primary">Save changes</button>
+      		</form>
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 </form>

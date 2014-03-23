@@ -5,6 +5,9 @@
 		<meta charset="utf-8" />
 		<!--<link href="./assets/css/layout.css">-->
 		<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+
 	</head>
 	<body>
 	  	<header>
