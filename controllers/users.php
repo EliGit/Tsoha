@@ -1,20 +1,18 @@
 <?php
+//require '../models/UserModel.php';
 class Users{
+  
   public static function getUsers() {
     global $db;
-    $sql = "SELECT id, name, password FROM users";
+    $sql = "SELECT * FROM user";
     $query = $db->getConn()->prepare($sql);
     $query->execute();
       
     $tulokset = array();
-    foreach($query->fetchAll(PDO::FETCH_OBJ) as $result) {
-      $user = new User();
-      $user->setId($result->id);
-      $user->setName($result->name);
-      $user->setPassword($result->password);
-
-      $tulokset[] = $user;
+    foreach($query->fetchAll(PDO::FETCH_ASSOC) as $result) {
+      $tulokset[] = $result;
     }
+
     return $tulokset;
   }
 

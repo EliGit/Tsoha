@@ -15,13 +15,26 @@ CREATE TABLE customerHour (
 CREATE TABLE user (
 	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(16),
-	password VARCHAR(100),
+	password BINARY(32), #SHA-256 compatible
 	firstname VARCHAR(32),
 	lastname VARCHAR(32),
-	address VARCHAR(128),	
-	email VARCHAR(254),
-	phone VARCHAR(15),
+	address VARCHAR(128),
+	email VARCHAR(254), #virallinen email max length 254
+	phone VARCHAR(15), #onpahan tilaa kansainvälisille
 	rank INT(1) NOT NULL #worker, manager?
+);
+
+#ilman kommentteja
+CREATE TABLE user (
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(16) NOT NULL,
+	password BINARY(32) NOT NULL,  
+	firstname VARCHAR(32),
+	lastname VARCHAR(32),
+	address VARCHAR(128),
+	email VARCHAR(254), 
+	phone VARCHAR(15), 
+	rank INT(1) NOT NULL 
 );
 
 #välitaulu käyttäjälle ja asiakkaalta laskutettavilta tunneilta

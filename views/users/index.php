@@ -1,11 +1,25 @@
 <h4>Listaelementtitesti: listataan käyttäjät tietokannasta</h4>
 
 <div class="container">
-	<ul>
-	<?php foreach($data->lista as $asia) { ?>
-	  <li><?php echo $asia; ?> | <a href="#">Käyttäjän sivulle</a></li>
-	<?php } ?>
-	</ul>
+	<table class="table table-striped">
+		<tr>
+			<th>Username</th>
+			<th>Name</th>
+			<th>Address</th>
+			<th>Email</th>
+			<th>Phone</th>
+		</tr>
+	<? foreach ($data->lista as $h) { ?>
+		<tr class="">
+			<td><?echo $h['username']?></td>
+			<td><?echo $h['firstname']." ".$h['lastname']?></td>
+			<td><?echo $h['address']?></td>
+			<td><?echo $h['email']?></td>
+			<td><?echo $h['phone']?></td>			
+			<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
+		</tr>	
+	<? } ?>
+	</table>
 </div>
 
 <hr>

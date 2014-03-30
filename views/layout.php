@@ -18,10 +18,13 @@
 		  			</div>
 		  		
 			        <ul class="nav navbar-nav">
-			            <li><a href="/users/">Käyttäjähallinta</a></li>
-			            <li><a href="/hours/">Asiakastunnit</a></li>
-			            <li><a href="/users/1">Käyttäjä</a></li>
-			            <li><a href="/report/">Yleisraportti</a></li>
+			        	<?if(isset($_SESSION['user'])){?>
+				            <li><a href="/users/">Käyttäjähallinta</a></li>
+				            <li><a href="/hours/">Asiakastunnit</a></li>
+				            <li><a href="/users/1">Käyttäjä</a></li>
+				            <li><a href="/report/">Yleisraportti</a></li>			            
+		            		<li><a href="/logout/">logout</a></li>
+		            	<?}?>
 			        </ul>
 		        </div>
 			</nav>

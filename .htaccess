@@ -2,5 +2,5 @@
 #RewriteCond %{REQUEST_FILENAME} !-F
 #RewriteRule . /index.php [L,QSA]
 FallbackResource /index.php
-
+DirectoryIndex index.php
 IndexOptions +Charset=UTF-8
