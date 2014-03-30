@@ -9,22 +9,30 @@ class User {
 
     	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-
-		//echo $password;
-		//echo $result[0]['username'];
 		$str1 = $password;
 		$str2 = $result[0]['username'];
-		//echo strcmp($str2, $str1);
-
-    	if(strcmp($str2, $str1)==0){
-    	//	echo "true";    		
+		
+    	if(strcmp($str2, $str1)==0){    	
     		return true;
     	} else {
-    	//	echo "false";
+    	
     		return false;
     	}
-    	//echo $result[0]['username'];
-
 	}
+
+
+    public static function getUsers() {
+        global $db;
+        $sql = "SELECT * FROM user";
+        $query = $db->getConn()->prepare($sql);
+        $query->execute();
+          
+        $tulokset = array();
+        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $result) {
+          $tulokset[] = $result;
+        }
+
+        return $tulokset;
+  }
 }
 ?>

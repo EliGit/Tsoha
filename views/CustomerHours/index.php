@@ -1,8 +1,8 @@
 <h1>Asiakkaille laskutettavat tunnit</h1>
 
 <p>
-Tässä näkyy asiakkaille laskutettavat tunnit, tekijät kenttä voi sisältää pilkulla eroteltuna useamman käyttäjän.
-Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämän näkymän osalta, mutta validointeja ei toistaiseksi ole.
+
+Lisäys ja luku tietokantayhteys ok. Update ja Destroy tapahtuu Bootstrap modalin kautta, mutta näitä ei vielä toteutettu.
 
 </p>
 
@@ -10,6 +10,7 @@ Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämä
 
 <div>
 	<table class="table table-striped">
+		<!--Table headers -->
 		<tr>
 			<th>P&auml;iv&auml;</th>
 			<th>Asiakas</th>
@@ -20,42 +21,22 @@ Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämä
 			<th>Laskutettu</th>
 			<th>Edit</th>
 		</tr>
-	
-	<?
-	/*$billed = in('get','billed');
-	if($billed != 1) {
-		$billed = 0;
-	}
-	
-	$hours = Hour::get_all($billed);
-	
-	*/
-	
-	foreach ($data->lista as $h) {
+		<!--Table content -->
+		<? foreach ($data->lista as $h) { ?>
 
-	?>
-		
-		
-		
-		
-		<tr class="">
-			<td style="padding: 5px;"><?echo $h['day']?></td>
-			<td><?echo $h['customer']?></td>
-			<td><?echo $h['people']?></td>
-			<td><?echo $h['description']?></td>
-			<td><?echo ($h['hours']?$h['hours']:'')?></td>
-			<td><?echo ($h['offhours']?$h['offhours']:'')?></td>
-			<td>ei</td>
-			<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
-		</tr>
-		
-		
-		
-		
-	<?
-		}
-	?>
+			<tr class="">
+				<td style="padding: 5px;"><?echo $h['day']?></td>
+				<td><?echo $h['customer']?></td>
+				<td><?echo $h['people']?></td>
+				<td><?echo $h['description']?></td>
+				<td><?echo ($h['hours']?$h['hours']:'')?></td>
+				<td><?echo ($h['offhours']?$h['offhours']:'')?></td>
+				<td>ei</td>
+				<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
+			</tr>
+		<? } ?>
 
+		<!--Table input -->
 		<tr>
 			<td><input type="text" name="day" value="<?echo date('Y-m-d')?>" class="form-control" size="10" /></td>
 			<td><input type="text" name="customer" value="" size="20" class="form-control"/></td>
@@ -70,7 +51,7 @@ Vain esimies voi poistaa, merkitä maksetuksi. Tietokantayhteys toimii jo tämä
 </div>
 
 
-<!-- Modal WorkHour Edit-->
+<!-- Modal for CustomerHour Edit-->
 	<div class="modal fade" id="modalHour" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">

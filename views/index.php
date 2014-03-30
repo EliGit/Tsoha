@@ -1,7 +1,7 @@
 <?if(isset($data->notice)){ ?>
 	<h1><?echo($data->notice)?></h1>
 	<div class="col-sm-6">
-		<form class="form-horizontal" role="form" action="/login" method="POST">
+		<form class="form-horizontal" role="form" action="/login/" method="POST">
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Username</label>
 		    <div class="col-sm-10">
@@ -19,10 +19,17 @@
 		      <button type="submit" class="btn btn-default">Sign in</button>
 		    </div>
 		  </div>
+		  <? if(isset($data->login)){ ?>
+			<p>Login <?echo $data->login?> </p>
+		<? } ?>
 		</form>
 	</div>
 <?}else {?>
 
 <h1>Tervetuloa</h1>
+
+	<? if(isset($data->login)){ ?>
+		<p>Login <?echo $data->login?> </p>
+	<? } ?>
 
 <?}?>
