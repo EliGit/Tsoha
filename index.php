@@ -13,6 +13,8 @@ $ru = $_SERVER['REQUEST_URI'];
 require 'controllers/LoginController.php';
 if($ru=="/login/") {LoginController::login();}
 if($ru=="/logout/") {LoginController::logout();}
+
+//not logged in -> always run this, no matter what HTTP request what was used as .htaccess routes everything to /index.php
 if( !LoginController::isLogged() ){LoginController::render();}
 
 

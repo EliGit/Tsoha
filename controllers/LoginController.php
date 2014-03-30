@@ -19,19 +19,14 @@ class LoginController{
 	}
 
 	public static function render(){
-		if(self::isLogged()) {
-			if(isset($_GET['login'])){
-				render('index.php', array("login" => $_GET['login']));
-			}
-			render('index.php', array());
+		$arr = array();
+		if(isset($_GET['login'])) $arr['login'] = $_GET['login'];
 
-
-		}
-		else {			
-			if(isset($_GET['login'])){
-				render('index.php', array("login" => $_GET['login'], "notice" => "Log in !"));
-			}
-			render('index.php', array("notice" => "Log in !"));
+		if(self::isLogged()) {			
+			render('index.php', $arr);
+		}else {			
+			$arr["notice"] = "Log in !";
+			render('index.php', $arr);
 		}
 	}
 }
