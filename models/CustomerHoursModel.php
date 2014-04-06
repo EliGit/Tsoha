@@ -2,7 +2,6 @@
 class CustomerHours{
 
 	private static function validatePeople($people){
-		if(empty($people)) return array();
 
 		$users = explode(",", $people);
 		$users_in_db = User::getUserNames();

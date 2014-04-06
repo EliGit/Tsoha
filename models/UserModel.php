@@ -6,9 +6,6 @@ class User {
 		$sql = "SELECT username, password FROM user WHERE username='$username'";
         $result = $db->query($sql);
     	
-    	//print_r($username);
-        //print_r($password);
-        //print_r($result);
 		$str1 = $password;
 		$str2 = $result[0]['username'];
 		
@@ -22,30 +19,21 @@ class User {
 
     public static function getUsers() {
         global $db;
-        $sql = "SELECT * FROM user";
-        $query = $db->getConn()->prepare($sql);
-        $query->execute();
-          
-        $tulokset = array();
-        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $result) {
-          $tulokset[] = $result;
-        }
-
-        return $tulokset;
+        $sql = "SELECT * FROM user";        
+        return $db->query($sql);
     }
 
     public static function getUserNames(){
         global $db;
         $sql = "SELECT username FROM user";
-        $query = $db->getConn()->prepare($sql);
-        $query->execute();
-          
-        $tulokset = array();
-        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $result) {
-          $tulokset[] = $result;
-        }
-
-        return $tulokset;
+        return $db->query($sql);
     }    
+
+    public static function addUser($u, $p){
+        global $db;
+        $sql = "INSERT INTO user SET username=".$db->quote($u).", password=".$db->quote($p);
+        return $db->insertQuery($sql);
+    }
+
 }
 ?>

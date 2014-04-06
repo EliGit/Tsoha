@@ -28,8 +28,12 @@ if(preg_match('/^\/hours\/add/',$ru)) { CustomerHoursController::create(); }
 elseif(preg_match('/^\/hours\/destroy/',$ru)) { CustomerHoursController::destroy(); }
 elseif(preg_match('/^\/hours\/update/',$ru)) { CustomerHoursController::update(); }
 elseif(preg_match('/^\/hours/',$ru)) { CustomerHoursController::index(); }
-elseif(preg_match('/^\/users\/1/',$ru)) { Users::show(); }
-elseif(preg_match('/^\/users/',$ru)) { Users::index();  }
+elseif(preg_match('/^\/users\/create/',$ru)) { UsersController::create(); }
+
+elseif(preg_match('/^\/users\/.+/',$ru)) { UsersController::show(); }
+elseif(preg_match('/^\/users/',$ru)) { UsersController::index();  }
+//elseif(preg_match('/^\/users\/u\/.*/',$ru)) { UsersController::show();}
+
 elseif(preg_match('/^\/report/',$ru)) { Report::render();  }
 elseif(preg_match('/^\/test/',$ru)) { require 'connectionTest.php';  }
 elseif(preg_match('/^\//', $ru)) { LoginController::render(); }
