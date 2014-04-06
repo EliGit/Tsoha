@@ -5,9 +5,18 @@ class CustomerHoursController{
 
 
 	public static function index() {
-		render('CustomerHours/index.php', array(
-			'lista' => CustomerHours::get_all()
-		));
+		if(isset($_GET['update'])) {
+			render('CustomerHours/index.php', array(
+				'lista' => CustomerHours::get_all(),
+				'notice' => "update ".$_GET['update']
+			));	
+		} else {
+			render('CustomerHours/index.php', array(
+				'lista' => CustomerHours::get_all()				
+			));	
+		}
+
+		
 	}
 
 	public static function create() {
@@ -24,18 +33,44 @@ class CustomerHoursController{
 		if(!$hours) { $hours = '0'; }
 		if(!$offhours) { $offhours = '0'; }
 
-		CustomerHours::add_hours($day, $customer, $people, $description, $hours, $offhours);
-		redirect('/hours/');
-		//TODO
-		//renderöi notice: failure jos ei onnistunut lisääminen
+		if(CustomerHours::add_hours($day, $customer, $people, $description, $hours, $offhours)){
+			redirect('/hours/', array("update", "success"));	
+		}
+		redirect('/hours/', array("update", "failed"));	
+		
 	}
 
 	public static function destroy(){
-
+		$id = in('post', 'hiddenID');
+		CustomerHours::delete_hour($id);
+		redirect('/hours/');
 	}
 
 	public static function update(){
+		$id = in('post', 'hiddenID');
 
+		$day = in('post','day');		
+		$customer = in('post','customer');
+		$people = in('post','people');
+		$description = in('post','description');
+		$hours = in('post','hours');
+		$offhours = in('post','offhours');
+		
+		$billed = in('post', 'billed');
+		if($billed == 'true'){
+			$billed = 1;
+		} else {
+			$billed = 0;
+		}
+
+		//echo "update following: " .$id." ".$day." ".$customer." ".$people." ".$description." ".$hours." ".$offhours." ".$billed;
+		$arr = array();
+		if(CustomerHours::update_hour($id, $day, $customer, $people, $description, $hours, $offhours, $billed)){			
+			redirect('/hours/', array("update", "success"));	
+		} else {
+			redirect('/hours/', array("update", "failed"));
+		}
+		
 	}
 }
 

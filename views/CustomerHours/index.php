@@ -1,12 +1,14 @@
 <h1>Asiakkaille laskutettavat tunnit</h1>
 
-<p>
 
-Lisäys ja luku tietokantayhteys ok. Update ja Destroy tapahtuu Bootstrap modalin kautta, mutta näitä ei vielä toteutettu.
 
-</p>
+<? if(isset($data->notice)){
+	echo "<p>$data->notice<p>";
+}
 
-<form action="/hours/add" method="post">
+
+?>
+
 
 <div>
 	<table class="table table-striped">
@@ -24,29 +26,61 @@ Lisäys ja luku tietokantayhteys ok. Update ja Destroy tapahtuu Bootstrap modali
 		<!--Table content -->
 		<? foreach ($data->lista as $h) { ?>
 
-			<tr class="">
+			<tr class=<?echo '"'.$h['id'].'"' ?> >
 				<td style="padding: 5px;"><?echo $h['day']?></td>
 				<td><?echo $h['customer']?></td>
-				<td><?echo $h['people']?></td>
+				<td><?echo implode(',', $h['people']) ?></td>
 				<td><?echo $h['description']?></td>
 				<td><?echo ($h['hours']?$h['hours']:'')?></td>
 				<td><?echo ($h['offhours']?$h['offhours']:'')?></td>
-				<td>ei</td>
-				<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
+				<td><?if($h['billed']==1){ echo "true";} else {echo "false";} ?></td>
+				<td><button data-id=<?echo '"'.$h['id'].'"' ?> type="button" class="modalopener btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
 			</tr>
 		<? } ?>
+		<!-- /Table content -->
 
-		<!--Table input -->
+		<!-- Transfer data to modal -->
+		<script>
+		$(document).on('click', ".modalopener", function() {
+			var date = $("." + $(this).data('id') + " td:nth-child(1)").text();
+			var customer = $("." + $(this).data('id') + " td:nth-child(2)").text();
+			var people = $("." + $(this).data('id') + " td:nth-child(3)").text();
+			var description = $("." + $(this).data('id') + " td:nth-child(4)").text();
+			var hours = $("." + $(this).data('id') + " td:nth-child(5)").text();
+			var offhours = $("." + $(this).data('id') + " td:nth-child(6)").text();
+			var billed = $("." + $(this).data('id') + " td:nth-child(7)").text();
+			var id = $(this).data('id')
+			//$("#hour1").val(id);
+			$("#day").val(date)
+			$("#customer").val(customer)
+			$("#people").val(people)
+			$("#description").val(description)
+			$("#hours").val(hours)
+			$("#offhours").val(offhours)
+			$("#hiddenID_update").val(id)
+			$("#hiddenID_destroy").val(id)
+			if(billed=="true"){
+				$('#billed').prop('checked', true);	
+			}
+			
+		});
+		</script>
+		<!-- /Transfer data to modal -->
+
+		<!--Table input row -->
 		<tr>
-			<td><input type="text" name="day" value="<?echo date('Y-m-d')?>" class="form-control" size="10" /></td>
-			<td><input type="text" name="customer" value="" size="20" class="form-control"/></td>
-			<td><input type="text" name="people" value="<?echo "username"?>" size="10" class="form-control"/></td>
-			<td><input type="text" name="description" value="" size="40" placeholder="Lyhyt kuvaus" class="form-control"/></td>
-			<td><input type="text" name="hours" value="" size="2" class="form-control"/></td>
-			<td><input type="text" name="offhours" value="" size="2" class="form-control"/></td>
-			<td><button type="submit" name="add" class="btn btn-success">Submit</button></td>			
-			<td></td>
+			<form action="/hours/add" method="post">
+				<td><input type="text" name="day" value="<?echo date('Y-m-d')?>" class="form-control" size="10" /></td>
+				<td><input type="text" name="customer" value="" size="20" class="form-control"/></td>
+				<td><input type="text" name="people" value="<?echo "username"?>" size="10" class="form-control"/></td>
+				<td><input type="text" name="description" value="" size="40" placeholder="Lyhyt kuvaus" class="form-control"/></td>
+				<td><input type="text" name="hours" value="" size="2" class="form-control"/></td>
+				<td><input type="text" name="offhours" value="" size="2" class="form-control"/></td>
+				<td><button type="submit" class="btn btn-success">Submit</button></td>			
+				<td></td>
+			</form>
 		</tr>
+		<!--/Table input row -->
 	</table>
 </div>
 
@@ -60,31 +94,34 @@ Lisäys ja luku tietokantayhteys ok. Update ja Destroy tapahtuu Bootstrap modali
 	        <h4 class="modal-title" id="myModalLabel">Muokkaa tietoja</h4>
 	      </div>
 	      <div class="modal-body">
-	        <table class="table">
-				<thead><h3>Asiakaslaskutus</h3></thead>
-				<tr><td>Päivä:</td><td>2014-01-01</td></tr>
-				<tr><td>Asiakas:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
-				<tr><td>Tekijät:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
-				<tr><td>Kuvaus:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
-				<tr><td>Tunnit 8-17:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
-				<tr><td>Tunnit 17-8:</td><td><input type="text" name="hour1" value="" size="10" class="form-control"/></td></tr>
-				<tr><td>Laskutettu:</td><td><input type="checkbox"></td></tr>
-			</table>			
+	      	<form action="/hours/update" method="post">
+		        <table class="table">
+					<thead><h3>Asiakaslaskutus</h3></thead>
+					<tr><td>Päivä:</td>       <td><input type="text" name="day" id="day" value="" size="10" class="form-control"></td></tr>
+					<tr><td>Asiakas:</td>     <td><input type="text" name="customer" id="customer" value="" size="10" class="form-control"/></td></tr>
+					<tr><td>Tekijät:</td>     <td><input type="text" name="people" id="people" value="" size="10" class="form-control"/></td></tr>
+					<tr><td>Kuvaus:</td>      <td><input type="text" name="description" id="description" value="" size="10" class="form-control"/></td></tr>
+					<tr><td>Tunnit 8-17:</td> <td><input type="text" name="hours" id="hours" value="" size="10" class="form-control"/></td></tr>
+					<tr><td>Tunnit 17-8:</td> <td><input type="text" name="offhours" id="offhours" value="" size="10" class="form-control"/></td></tr>
+					<tr><td>Laskutettu:</td>  <td><input type="checkbox" name="billed" id="billed" value="true"></td></tr>
+				</table>
+				<input type="hidden" name="hiddenID" id="hiddenID_update" />
+				<button type="submit" class="btn btn-primary">Save changes</button>
+			</form>
 	      </div>
 	      <div class="modal-footer">
-	      	<form class="form-inline" role="form">	      		
+	      	<form class="form-inline" action="/hours/destroy" method="post">	      		
 	      		<div class="form-group">
     				<label class="sr-only" for="exampleInputPassword2">Password</label>
     				<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
-  				</div>
-  				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      		<button type="button" class="btn btn-danger">Delete</button>
-	        	<button type="button" class="btn btn-primary">Save changes</button>
+  				</div>  				
+  				<input type="hidden" name="hiddenID" id="hiddenID_destroy" />
+	      		<button type="submit" class="btn btn-danger">Delete</button>	        	
       		</form>
+      		<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
 	        
 	      </div>
 	    </div>
 	  </div>
 	</div>
 
-</form>

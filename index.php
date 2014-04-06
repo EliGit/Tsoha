@@ -14,7 +14,7 @@ require 'controllers/LoginController.php';
 if($ru=="/login/") {LoginController::login();}
 if($ru=="/logout/") {LoginController::logout();}
 
-//not logged in -> always run this, no matter what HTTP request what was used as .htaccess routes everything to /index.php
+//if NOT logged in -> always run this, no matter what HTTP request what was used as .htaccess routes everything to /index.php
 if( !LoginController::isLogged() ){LoginController::render();}
 
 
@@ -25,6 +25,8 @@ require 'controllers/ReportController.php';
 
 
 if(preg_match('/^\/hours\/add/',$ru)) { CustomerHoursController::create(); }
+elseif(preg_match('/^\/hours\/destroy/',$ru)) { CustomerHoursController::destroy(); }
+elseif(preg_match('/^\/hours\/update/',$ru)) { CustomerHoursController::update(); }
 elseif(preg_match('/^\/hours/',$ru)) { CustomerHoursController::index(); }
 elseif(preg_match('/^\/users\/1/',$ru)) { Users::show(); }
 elseif(preg_match('/^\/users/',$ru)) { Users::index();  }

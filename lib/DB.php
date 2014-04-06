@@ -16,7 +16,7 @@ class DB{
 								$this->passwd);
 
 		//PDO error reporting
-		$this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+		//$this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 	}
 
 	public function getConn(){
@@ -24,7 +24,7 @@ class DB{
 	}
 
 	public function query($sql){		
-		$query = $db->getConn()->prepare($sql);
+		$query = $this->getConn()->prepare($sql);
 		$query->execute();
 
 		$tulokset = array();
@@ -36,12 +36,18 @@ class DB{
 
 	public function insertQuery($sql){
 		$query = $this->getConn()->prepare($sql);
-		$query->execute();
+		return $query->execute();
 	}
 
 	public function quote($str) {
 		return mysql_real_escape_string($str);
 	}
+
+
+	public function latestID(){
+		return $this->getConn()->lastInsertId();	
+	}
+	
 
 
 /*

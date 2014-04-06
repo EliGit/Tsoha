@@ -33,6 +33,20 @@ class User {
         }
 
         return $tulokset;
-  }
+    }
+
+    public static function getUserNames(){
+        global $db;
+        $sql = "SELECT username FROM user";
+        $query = $db->getConn()->prepare($sql);
+        $query->execute();
+          
+        $tulokset = array();
+        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $result) {
+          $tulokset[] = $result;
+        }
+
+        return $tulokset;
+    }    
 }
 ?>
