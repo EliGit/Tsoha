@@ -15,9 +15,9 @@ class CustomerHoursController{
 
 	public static function create() {
 		$day = in('post','day');		
-		$customer = in('post','customer');
-		$people = in('post','people');
-		$description = in('post','description');
+		$customer = htmlspecialchars(in('post','customer'));
+		$people = htmlspecialchars(in('post','people'));
+		$description = htmlspecialchars(in('post','description'));
 		$hours = in('post','hours');
 		$offhours = in('post','offhours');
 
@@ -44,12 +44,11 @@ class CustomerHoursController{
 	}
 
 	public static function update(){
-		$id = in('post', 'hiddenID');
-
+		$id = htmlspecialchars(in('post', 'hiddenID'));
 		$day = in('post','day');		
-		$customer = in('post','customer');
-		$people = in('post','people');
-		$description = in('post','description');
+		$customer = htmlspecialchars(in('post','customer'));
+		$people = htmlspecialchars(in('post','people'));
+		$description = htmlspecialchars(in('post','description'));
 		$hours = in('post','hours');
 		$offhours = in('post','offhours');
 		
