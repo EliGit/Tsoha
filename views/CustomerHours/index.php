@@ -23,8 +23,8 @@
 				<td><?echo $h['customer']?></td>
 				<td><?echo implode(',', $h['people']) ?></td>
 				<td><?echo $h['description']?></td>
-				<td><?echo ($h['hours']?$h['hours']:'')?></td>
-				<td><?echo ($h['offhours']?$h['offhours']:'')?></td>
+				<td><?echo ($h['hours'])?></td>
+				<td><?echo ($h['offhours'])?></td>
 				<td><?if($h['billed']==1){ echo "true";} else {echo "false";} ?></td>
 				<td><button data-id=<?echo '"'.$h['id'].'"' ?> type="button" class="modalopener btn btn-danger" data-toggle="modal" data-target="#modalHour">x</button></td>			
 			</tr>

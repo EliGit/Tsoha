@@ -6,6 +6,7 @@ class CustomerHoursController{
 
 	public static function index() {		
 		render('CustomerHours/index.php', array(
+			'notice' => $_GET['notice'],
 			'lista' => CustomerHours::get_all(),
 			"uparams" => array(date('Y-m-d'), "Customer's name", $_SESSION['user'], "Short description", null, null)
 		));	
@@ -109,7 +110,7 @@ class CustomerHoursController{
 			));
 		}
 
-		if(empty($hours) || !is_numeric($hours)){
+		if((empty($hours) && $hours!=0) || !is_numeric($hours)){
 			render('CustomerHours/index.php', array(
 				"lista" => CustomerHours::get_all(),
 				"notice" => "invalid hours",
@@ -117,7 +118,7 @@ class CustomerHoursController{
 			));
 		}
 
-		if(empty($offhours) || !is_numeric($offhours)){
+		if((empty($offhours) && $offhours!=0) || !is_numeric($offhours)){
 			render('CustomerHours/index.php', array(
 				"lista" => CustomerHours::get_all(),
 				"notice" => "invalid offhours",
