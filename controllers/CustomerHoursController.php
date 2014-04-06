@@ -29,11 +29,7 @@ class CustomerHoursController{
 		if(CustomerHours::add_hours($day, $customer, $people, $description, $hours, $offhours)){
 			redirect('/hours/', array("notice", "create success"));	
 		} 
-		render('CustomerHours/index.php', array(
-			"lista" => CustomerHours::get_all(),
-			"notice" => "create failed, check input formats",
-			"uparams" => array($day, $customer, $people, $description, $hours, $offhours))
-		);
+		CustomerHoursController::render(array($day, $customer, $people, $description, $hours, $offhours), "create failed, check input formats");
 	}
 
 	public static function destroy(){
@@ -44,7 +40,7 @@ class CustomerHoursController{
 				redirect('/hours/', array("notice", "destroy success"));	
 			}		
 		}
-		redirect('/hours/', array("notice", "destroy failed"));			
+		CustomerHoursController::render(array(date('Y-m-d'), "Customer's name", $_SESSION['user'], "Short description", null, null), "destroy failed, check password!");		
 	}
 
 	public static function update(){
@@ -70,61 +66,37 @@ class CustomerHoursController{
 		if(CustomerHours::update_hour($id, $day, $customer, $people, $description, $hours, $offhours, $billed)){			
 			redirect('/hours/', array("notice", "update success"));	
 		} 
-		render('CustomerHours/index.php', array(
-			"lista" => CustomerHours::get_all(),
-			"notice" => "update failed, check input formats",
-			"uparams" => array($day, $customer, $people, $description, $hours, $offhours))
-		);
+		CustomerHoursController::render(array($day, $customer, $people, $description, $hours, $offhours), "update failed, check input formats");
 	}
 
 	private static function validateParams($day, $customer, $people, $description, $hours, $offhours){
+		$uparams = array($day, $customer, $people, $description, $hours, $offhours);
 		if(empty($day) || !(preg_match('/^\d{4}-\d{2}-\d{2}/', $day))){
-			render('CustomerHours/index.php', array(
-				"lista" => CustomerHours::get_all(),
-				"notice" => "invalid date!",
-				"uparams" => array($day, $customer, $people, $description, $hours, $offhours)
-			));
+			CustomerHoursController::render($uparams, "invalid date!");
 		}
-
 		if(empty($customer)){
-			render('CustomerHours/index.php', array(
-				"lista" => CustomerHours::get_all(),
-				"notice" => "no customer!",
-				"uparams" => array($day, $customer, $people, $description, $hours, $offhours)
-			));
+			CustomerHoursController::render($uparams, "no customer!");
 		} 
-
 		if(empty($people)){
-			render('CustomerHours/index.php', array(
-				"lista" => CustomerHours::get_all(),
-				"notice" => "no workers!",
-				"uparams" => array($day, $customer, $people, $description, $hours, $offhours)
-			));
+			CustomerHoursController::render($uparams, "no workers!");
 		}
-
 		if(empty($description)){
-			render('CustomerHours/index.php', array(
-				"lista" => CustomerHours::get_all(),
-				"notice" => "write a description!",
-				"uparams" => array($day, $customer, $people, $description, $hours, $offhours)
-			));
+			CustomerHoursController::render($uparams, "write a description!");
 		}
-
 		if((empty($hours) && $hours!=0) || !is_numeric($hours)){
-			render('CustomerHours/index.php', array(
-				"lista" => CustomerHours::get_all(),
-				"notice" => "invalid hours",
-				"uparams" => array($day, $customer, $people, $description, $hours, $offhours)
-			));
+			CustomerHoursController::render($uparams, "invalid hours!");
 		}
-
 		if((empty($offhours) && $offhours!=0) || !is_numeric($offhours)){
-			render('CustomerHours/index.php', array(
-				"lista" => CustomerHours::get_all(),
-				"notice" => "invalid offhours",
-				"uparams" => array($day, $customer, $people, $description, $hours, $offhours)
-			));
+			CustomerHoursController::render($uparams, "invalid offhours!");
 		}	
+	}
+
+	private static function render($uparams, $notice){
+		render('CustomerHours/index.php', array(
+				"lista" => CustomerHours::get_all(),
+				"notice" => $notice,
+				"uparams" => $uparams
+			));
 	}
 }
 
