@@ -1,5 +1,4 @@
 <?php
-//require './models/UserModel.php';
 class CustomerHours{
 
 	private static function validatePeople($people){
@@ -13,18 +12,13 @@ class CustomerHours{
 				return false;
 			}
 		}
-
 		return $users;
 	}
 
 	private static function addWorkHourUsers($users, $id){
-
 		global $db;
 
-		
-
-		foreach ($users as $u) {
-			//echo "INSERT INTO customerHourWorkers SET customerHour_id='".$db->quote($id)."',user_id='".$db->quote($u)."'";
+		foreach ($users as $u) {			
 			$q = "INSERT INTO customerHourWorkers SET customerHour_id=".$db->quote($id).",user_id=".$db->quote($u);
 			if(!$db->insertQuery($q)){
 				return false;

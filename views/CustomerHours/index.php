@@ -72,7 +72,7 @@
 			<form action="/hours/add" method="post">
 				<td><input type="text" name="day" value="<?echo date('Y-m-d')?>" class="form-control" size="10" /></td>
 				<td><input type="text" name="customer" value="" size="20" class="form-control"/></td>
-				<td><input type="text" name="people" value="<?echo "username"?>" size="10" class="form-control"/></td>
+				<td><input type="text" name="people" value="<?echo $_SESSION['user'];?>" size="10" class="form-control"/></td>
 				<td><input type="text" name="description" value="" size="40" placeholder="Lyhyt kuvaus" class="form-control"/></td>
 				<td><input type="text" name="hours" value="" size="2" class="form-control"/></td>
 				<td><input type="text" name="offhours" value="" size="2" class="form-control"/></td>
@@ -113,7 +113,7 @@
 	      	<form class="form-inline" action="/hours/destroy" method="post">	      		
 	      		<div class="form-group">
     				<label class="sr-only" for="exampleInputPassword2">Password</label>
-    				<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+    				<input type="password" class="form-control" name="password" placeholder="Password">
   				</div>  				
   				<input type="hidden" name="hiddenID" id="hiddenID_destroy" />
 	      		<button type="submit" class="btn btn-danger">Delete</button>	        	

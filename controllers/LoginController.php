@@ -3,7 +3,7 @@ class LoginController{
 	public static function login(){
 		require 'models/UserModel.php';
 		if(User::authenticate($_POST["username"], $_POST["password"])){
-			$_SESSION["user"] = "kalle";
+			$_SESSION["user"] = $_POST["username"];
 			redirect('/', array("login", "success"));
 		} 
 		redirect('/', array("login", "failed"));

@@ -4,18 +4,17 @@ class User {
 		global $db;
 
 		$sql = "SELECT username, password FROM user WHERE username='$username'";
-    	$query = $db->getConn()->prepare($sql);
-    	$query->execute();
-
-    	$result = $query->fetchAll(PDO::FETCH_ASSOC);
-
+        $result = $db->query($sql);
+    	
+    	//print_r($username);
+        //print_r($password);
+        //print_r($result);
 		$str1 = $password;
 		$str2 = $result[0]['username'];
 		
     	if(strcmp($str2, $str1)==0){    	
     		return true;
-    	} else {
-    	
+    	} else {    	
     		return false;
     	}
 	}
