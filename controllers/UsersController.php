@@ -11,7 +11,7 @@ class UsersController{
   	}
 
 	public static function show(){
-	    render('users/show.php', array());
+	    render('Users/show.php', array());
   	}
 
   	public static function create() {
