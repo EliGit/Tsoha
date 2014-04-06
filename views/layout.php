@@ -29,7 +29,12 @@
 		        </div>
 			</nav>
 	    </header>
-	  	
+
+	  	<? if(isset($data->notice)){ ?>
+		  	<div class="container">
+	  			<h3><font color="red"> <?echo $data->notice . "!";?> </font><h3>
+		  	</div>	  		
+		<?}?>
 		  	
 	    <div class="container">
 		  	<!-- liitä sisältö -->
