@@ -25,7 +25,7 @@ class CustomerHours{
 
 		foreach ($users as $u) {
 			//echo "INSERT INTO customerHourWorkers SET customerHour_id='".$db->quote($id)."',user_id='".$db->quote($u)."'";
-			$q = "INSERT INTO customerHourWorkers SET customerHour_id='".$db->quote($id)."',user_id='".$db->quote($u)."'";
+			$q = "INSERT INTO customerHourWorkers SET customerHour_id=".$db->quote($id).",user_id=".$db->quote($u);
 			if(!$db->insertQuery($q)){
 				return false;
 			}
@@ -62,10 +62,10 @@ class CustomerHours{
 
 
 		//create customerHour entry
-		$q = "INSERT INTO customerHour SET day='"
-				.$db->quote($day)."',customer='".$db->quote($customer)
-				."',description='".$db->quote($description)
-				."',hours=".$db->quote($hours).",offhours=".$db->quote($offhours).",billed=0";
+		$q = "INSERT INTO customerHour SET day="
+				.$db->quote($day).",customer=".$db->quote($customer)
+				.",description=".$db->quote($description)
+				.",hours=".$db->quote($hours).",offhours=".$db->quote($offhours).",billed='0'";
 		$db->insertQuery($q);
 		
 		
@@ -92,7 +92,7 @@ class CustomerHours{
 		
 
 		//find current workers
-		$sql = "SELECT user_id FROM customerHourWorkers WHERE customerHour_id='$id'";
+		$sql = "SELECT user_id FROM customerHourWorkers WHERE customerHour_id=".$db->quote($id);
 		$workers = $db->query($sql);
 
 		//add if needed
@@ -107,15 +107,15 @@ class CustomerHours{
 		//remove if needed
 		foreach ($workers as $w) {
 			if(!in_array($w['user_id'], $users)){				
-				$sql = "DELETE FROM customerHourWorkers WHERE customerHour_id=$id AND user_id='" . $w['user_id'] . "'";
+				$sql = "DELETE FROM customerHourWorkers WHERE customerHour_id=".$db->quote($id)." AND user_id=" . $db->quote($w['user_id']);
 				$bool = $db->insertQuery($sql);
 			}
 		}
 
 		//update customerHour normally
-		$q = "UPDATE customerHour SET day='".$db->quote($day)."',customer='".$db->quote($customer)
-				."',description='".$db->quote($description)
-				."',hours=".$db->quote($hours).",offhours=".$db->quote($offhours).",billed=".$db->quote($billed)
+		$q = "UPDATE customerHour SET day=".$db->quote($day).",customer=".$db->quote($customer)
+				.",description=".$db->quote($description)
+				.",hours=".$db->quote($hours).",offhours=".$db->quote($offhours).",billed=".$db->quote($billed)
 				." WHERE id=".$db->quote($id);
 		return $db->insertQuery($q);
 	}

@@ -16,7 +16,7 @@ class DB{
 								$this->passwd);
 
 		//PDO error reporting
-		//$this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+		$this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 	}
 
 	public function getConn(){
@@ -40,7 +40,8 @@ class DB{
 	}
 
 	public function quote($str) {
-		return mysql_real_escape_string($str);
+		//return mysql_real_escape_string($str);
+		return $this->conn->quote($str);
 	}
 
 
