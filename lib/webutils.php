@@ -7,27 +7,26 @@ function render($sivu, $data=array()) {
   
 function in($method,$key) {
 	if(!preg_match('/^(get|post)$/',$method)) {
-		return FALSE;
+		return false;
 	}
 	if(!$key) {
-		return FALSE;
+		return false;
 	}
 	
 	if($method == 'get') {
 		if(isset($_GET[$key])) {
 			return $_GET[$key];
 		}
-		return FALSE;
+		return false;
 	}
 
 	if($method == 'post') {
 		if(isset($_POST[$key])) {
 			return $_POST[$key];
 		}
-		return FALSE;
+		return false;
 	}
-
-	return FALSE;
+	return false;
 }
 
 function redirect($url, $getParams='' ,$statusCode = 303)
@@ -39,7 +38,6 @@ function redirect($url, $getParams='' ,$statusCode = 303)
 		$params = http_build_query($data);
 		header('Location: ' . $url . '?' . $params, true, $statusCode);
 	}
-   
    	die();
 }
 ?>

@@ -1,5 +1,4 @@
 <?if(isset($data->notice)){ ?>
-	<h1><?echo($data->notice)?></h1>
 	<div class="col-sm-6">
 		<form class="form-horizontal" role="form" action="/login/" method="POST">
 		  <div class="form-group">

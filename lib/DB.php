@@ -40,7 +40,6 @@ class DB{
 	}
 
 	public function quote($str) {
-		//return mysql_real_escape_string($str);
 		return $this->conn->quote($str);
 	}
 

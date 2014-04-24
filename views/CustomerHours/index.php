@@ -1,7 +1,4 @@
 <h1>Asiakkaille laskutettavat tunnit</h1>
-
-
-
 <div>
 	<table class="table table-striped">
 		<!--Table headers -->

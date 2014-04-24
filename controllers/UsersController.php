@@ -1,7 +1,10 @@
 <?php
 require './models/UserModel.php';
+
 class UsersController{
-  
+   /*
+   	*	INDEX
+  	*/
   	public static function index(){
 	    render('Users/index.php', array(
 	                "lista" => User::getUsers(),
@@ -9,11 +12,19 @@ class UsersController{
 	                "uparams" => array("username", "password", "password confirmation")
 	            ));
   	}
-
-	public static function show(){
-	    render('Users/show.php', array());
+  	
+   /*
+   	*	SHOW
+  	*/
+	public static function show(){		
+		$workHours = WorkHour::getUsersWorkHours($_SESSION["user"]);
+	    render('Users/show.php', array("user" => $_SESSION["user"], 
+	    							   "lista" => $workHours));
   	}
 
+   /*
+   	*	CREATE 
+  	*/
   	public static function create() {
         $u = in('post', 'username');
         $p1 = in('post', 'password1');
@@ -37,6 +48,9 @@ class UsersController{
 
 	}
 
+   /*
+   	*	PRIVATE
+  	*/
 	private static function validateParams($u, $p1, $p2){
 		$uparams = array($u, $p1, $p2);
 		if(strlen($u) < 4){

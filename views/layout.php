@@ -2,8 +2,7 @@
 <html>
 	<head>
 		<title>HR-Manager</title>
-		<meta charset="utf-8" />
-		<!--<link href="./assets/css/layout.css">-->
+		<meta charset="utf-8" />		
 		<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
@@ -30,6 +29,7 @@
 			</nav>
 	    </header>
 
+	    <!-- NOTICE -->
 	  	<? if(isset($data->notice)){ ?>
 		  	<div class="container">
 	  			<h3><font color="red"> <?echo $data->notice . "!";?> </font><h3>
@@ -37,7 +37,7 @@
 		<?}?>
 		  	
 	    <div class="container">
-		  	<!-- liitä sisältö -->
+		  	<!-- CONTENT -->
 			<?php require 'views/'.$sivu; ?>
 		</div >
 
@@ -46,6 +46,5 @@
 			<p>ELN</p>
 		</footer>
   
-
   	</body>
 </html>

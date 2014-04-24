@@ -2,8 +2,9 @@
 require './models/CustomerHoursModel.php';
 class CustomerHoursController{
 	
-
-
+   /*
+   	*	INDEX
+  	*/
 	public static function index() {		
 		render('CustomerHours/index.php', array(
 			'notice' => $_GET['notice'],
@@ -12,7 +13,9 @@ class CustomerHoursController{
 		));	
 	}
 	
-
+   /*
+   	*	CREATE 
+  	*/
 	public static function create() {
 		$day = in('post','day');		
 		$customer = htmlspecialchars(in('post','customer'));
@@ -32,6 +35,9 @@ class CustomerHoursController{
 		CustomerHoursController::render(array($day, $customer, $people, $description, $hours, $offhours), "create failed, check input formats");
 	}
 
+   /*
+   	*	DESTROY
+  	*/
 	public static function destroy(){
 		$id = in('post', 'hiddenID');
 		$psswd = in('post', 'password');
@@ -42,6 +48,11 @@ class CustomerHoursController{
 		}
 		CustomerHoursController::render(array(date('Y-m-d'), "Customer's name", $_SESSION['user'], "Short description", null, null), "destroy failed, check password!");		
 	}
+
+
+   /*
+   	*	UPDATE
+  	*/
 
 	public static function update(){
 		$id = htmlspecialchars(in('post', 'hiddenID'));
@@ -66,6 +77,22 @@ class CustomerHoursController{
 			redirect('/hours/', array("notice", "update success"));	
 		} 
 		CustomerHoursController::render(array($day, $customer, $people, $description, $hours, $offhours), "update failed, check input formats");
+	}
+
+   /*
+	*   PRIVATES
+	*/
+
+	private static function params() {
+		$day = in('post','day');		
+		$customer = htmlspecialchars(in('post','customer'));
+		$people = htmlspecialchars(in('post','people'));
+		$description = htmlspecialchars(in('post','description'));
+		$hours = in('post','hours');
+		$offhours = in('post','offhours');
+
+		return array("day" => $day, "customer" => $customer, "people" => $people,
+					 "description"=> $description, "hours" => $hours, "offhours" => $offhours);
 	}
 
 	private static function validateParams($day, $customer, $people, $description, $hours, $offhours){

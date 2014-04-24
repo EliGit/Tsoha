@@ -51,9 +51,6 @@ CREATE TABLE workHour (
 	hours INT(11),
 	offhours INT(11),
 	standbyhours INT(11),
-	deleted INT(1),
-	user_id INT(11),
-	FOREIGN KEY (user_id)
-		REFERENCES user (id)
-		ON DELETE CASCADE
+	username VARCHAR(16),
+	FOREIGN KEY (username) REFERENCES user (username) ON DELETE CASCADE
 );

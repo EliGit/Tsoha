@@ -12,6 +12,6 @@ INSERT INTO customerHourWorkers SET customerHour_id=2 ,user_id =1;
 INSERT INTO customerHourWorkers SET customerHour_id=1 ,user_id =2;
 INSERT INTO customerHourWorkers SET customerHour_id=2 ,user_id =2;
 
-INSERT INTO workhour SET id=1,day=Date('2014-01-01'), hours=4,offhours=1,standbyhours=0,deleted=0, user_id=1;
-INSERT INTO workhour SET id=2,day=Date('2014-01-02'), hours=4,offhours=1,standbyhours=0,deleted=0, user_id=1;
-INSERT INTO workhour SET id=3,day=Date('2014-01-03'), hours=4,offhours=1,standbyhours=0,deleted=0, user_id=1;
+INSERT INTO workHour SET id=1,day=Date('2014-01-01'), hours=4,offhours=1,standbyhours=0,username='user1';
+INSERT INTO workHour SET id=2,day=Date('2014-01-02'), hours=4,offhours=1,standbyhours=0,username='user1';
+INSERT INTO workHour SET id=3,day=Date('2014-01-03'), hours=4,offhours=1,standbyhours=0,username='user1';
