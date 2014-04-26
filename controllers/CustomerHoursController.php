@@ -2,6 +2,12 @@
 require './models/CustomerHoursModel.php';
 class CustomerHoursController{
 	
+	//"CONST"
+	private static function DEFAULTPARAMS() {
+		return array('day' => date('Y-m-d'), 'customer' => "Customer's name", 'people' => $_SESSION['user'], 
+					'description' => "Short description",'hours' => 0,'offhours'=> 0);
+	}
+	
    /*
    	*	INDEX
   	*/
@@ -9,7 +15,7 @@ class CustomerHoursController{
 		render('CustomerHours/index.php', array(
 			'notice' => $_GET['notice'],
 			'lista' => CustomerHours::get_all(),
-			"uparams" => array(date('Y-m-d'), "Customer's name", $_SESSION['user'], "Short description", null, null)
+			"uparams" => CustomerHoursController::DEFAULTPARAMS()
 		));	
 	}
 	
@@ -17,36 +23,31 @@ class CustomerHoursController{
    	*	CREATE 
   	*/
 	public static function create() {
-		$day = in('post','day');		
-		$customer = htmlspecialchars(in('post','customer'));
-		$people = htmlspecialchars(in('post','people'));
-		$description = htmlspecialchars(in('post','description'));
-		$hours = in('post','hours');
-		$offhours = in('post','offhours');
+		$p = CustomerHoursController::params();
 
-		if(!$hours) { $hours = '0'; }
-		if(!$offhours) { $offhours = '0'; }
+		CustomerHoursController::validateParams($p);
 
-		CustomerHoursController::validateParams($day, $customer, $people, $description, $hours, $offhours);
-
-		if(CustomerHours::add_hours($day, $customer, $people, $description, $hours, $offhours)){
-			redirect('/hours/', array("notice", "create success"));	
+		if(CustomerHours::add_hours($p['day'], $p['customer'], $p['people'], $p['description'], $p['hours'], $p['offhours'])){
+			redirect('/hours/', array("notice" => "create success"));	
 		} 
-		CustomerHoursController::render(array($day, $customer, $people, $description, $hours, $offhours), "create failed, check input formats");
+		CustomerHoursController::render(CustomerHoursController::DEFAULTPARAMS(), "rejected create, check users and inputs");
 	}
 
    /*
    	*	DESTROY
   	*/
 	public static function destroy(){
+		if($_SESSION['rank']!=1) {
+			exit;	
+		}
 		$id = in('post', 'hiddenID');
 		$psswd = in('post', 'password');
 		if(User::authenticate($_SESSION['user'],$psswd )){
 			if(CustomerHours::delete_hour($id)){
-				redirect('/hours/', array("notice", "destroy success"));	
+				redirect('/hours/', array("notice" => "destroy success"));	
 			}		
 		}
-		CustomerHoursController::render(array(date('Y-m-d'), "Customer's name", $_SESSION['user'], "Short description", null, null), "destroy failed, check password!");		
+		CustomerHoursController::render(array(date('Y-m-d'), "Customer's name", $_SESSION['user'], "Short description", null, null), "destroy failed, check password!");
 	}
 
 
@@ -56,12 +57,13 @@ class CustomerHoursController{
 
 	public static function update(){
 		$id = htmlspecialchars(in('post', 'hiddenID'));
-		$day = in('post','day');		
-		$customer = htmlspecialchars(in('post','customer'));
-		$people = htmlspecialchars(in('post','people'));
-		$description = htmlspecialchars(in('post','description'));
-		$hours = in('post','hours');
-		$offhours = in('post','offhours');
+
+		//allow update only if user is a worker in this customerHour
+		if(!CustomerHours::allowUpdate($_SESSION['user'], $id) && $_SESSION['rank']!=1){
+			CustomerHoursController::render(CustomerHoursController::DEFAULTPARAMS(),"you are not allowed to update this customerHour as you are not a worker in it!");
+		}
+
+		$p = CustomerHoursController::params();
 		
 		$billed = in('post', 'billed');
 		if($billed == 'true'){
@@ -70,13 +72,15 @@ class CustomerHoursController{
 			$billed = 0;
 		}
 		
-		CustomerHoursController::validateParams($day, $customer, $people, $description, $hours, $offhours);
+		CustomerHoursController::validateParams($p);
+
+
 					
 		$arr = array();
-		if(CustomerHours::update_hour($id, $day, $customer, $people, $description, $hours, $offhours, $billed)){			
-			redirect('/hours/', array("notice", "update success"));	
+		if(CustomerHours::update_hour($id, $p['day'], $p['customer'], $p['people'], $p['description'], $p['hours'], $p['offhours'], $billed)){			
+			redirect('/hours/', array("notice" =>"update success"));	
 		} 
-		CustomerHoursController::render(array($day, $customer, $people, $description, $hours, $offhours), "update failed, check input formats");
+		CustomerHoursController::render(CustomerHoursController::DEFAULTPARAMS(),"update failed, check input formats");
 	}
 
    /*
@@ -91,29 +95,32 @@ class CustomerHoursController{
 		$hours = in('post','hours');
 		$offhours = in('post','offhours');
 
+		if(!$hours) { $hours = '0'; }
+		if(!$offhours) { $offhours = '0'; }
+
 		return array("day" => $day, "customer" => $customer, "people" => $people,
 					 "description"=> $description, "hours" => $hours, "offhours" => $offhours);
 	}
 
-	private static function validateParams($day, $customer, $people, $description, $hours, $offhours){
-		$uparams = array($day, $customer, $people, $description, $hours, $offhours);
-		if(empty($day) || !(preg_match('/^\d{4}-\d{2}-\d{2}/', $day))){
-			CustomerHoursController::render($uparams, "invalid date!");
+	private static function validateParams($p){
+
+		if(empty($p['day']) || !(preg_match('/^\d{4}-\d{2}-\d{2}/', $p['day']))){
+			CustomerHoursController::render($p, "invalid date!");
 		}
-		if(empty($customer)){
-			CustomerHoursController::render($uparams, "no customer!");
+		if(empty($p['customer'])){
+			CustomerHoursController::render($p, "no customer!");
 		} 
-		if(empty($people)){
-			CustomerHoursController::render($uparams, "no workers!");
+		if(empty($p['people'])){
+			CustomerHoursController::render($p, "no workers!");
 		}
-		if(empty($description)){
-			CustomerHoursController::render($uparams, "write a description!");
+		if(empty($p['description'])){
+			CustomerHoursController::render($p, "write a description!");
 		}
-		if((empty($hours) && $hours!=0) || !is_numeric($hours)){
-			CustomerHoursController::render($uparams, "invalid hours!");
+		if(!is_numeric($p['hours']) || $p['hours']>9){
+			CustomerHoursController::render($p, "invalid hours!");
 		}
-		if((empty($offhours) && $offhours!=0) || !is_numeric($offhours)){
-			CustomerHoursController::render($uparams, "invalid offhours!");
+		if(!is_numeric($p['offhours']) || $p['offhours']>15){
+			CustomerHoursController::render($p, "invalid offhours!");
 		}	
 	}
 
@@ -124,6 +131,7 @@ class CustomerHoursController{
 				"uparams" => $uparams
 			));
 	}
+
 }
 
 ?>

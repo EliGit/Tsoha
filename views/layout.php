@@ -15,16 +15,22 @@
 		  			<div class="navbar-header">
 		  				<a class="navbar-brand" href="/">HR-Manager</a>
 		  			</div>
-		  		
+		  			<!-- NAVBAR -->
 			        <ul class="nav navbar-nav">
 			        	<?if(isset($_SESSION['user'])){?>
-				            <li><a href="/users/">Käyttäjähallinta</a></li>
+				            
+				            <li><a href="/users/">Käyttäjät</a></li>
 				            <li><a href="/hours/">Asiakastunnit</a></li>
-				            <li><a href="/users/1">Käyttäjä</a></li>
-				            <li><a href="/report/">Yleisraportti</a></li>			            
+				            <li><a href=<?echo "/users?u=".$_SESSION["user"]?>><?echo $_SESSION["user"];?></a></li>
+				            
+				            <?if($_SESSION['rank']==1) {?> 
+				            	<li><a href="/report/">Yleisraportti</a></li>			            
+			            	<?}?>
+		            		
 		            		<li><a href="/logout/">logout</a></li>
 		            	<?}?>
 			        </ul>
+			        <!-- /NAVBAR -->
 		        </div>
 			</nav>
 	    </header>

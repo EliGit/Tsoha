@@ -21,8 +21,8 @@ if( !LoginController::isLogged() ){LoginController::render();}
 // ROUTING
 require 'controllers/CustomerHoursController.php';
 require 'controllers/UsersController.php';
-require 'controllers/ReportController.php';
 require 'controllers/WorkHoursController.php';
+require 'controllers/ReportController.php';
 
 
 if(preg_match('/^\/hours\/add/',$ru)) { CustomerHoursController::create(); }
@@ -31,7 +31,10 @@ elseif(preg_match('/^\/hours\/update/',$ru)) { CustomerHoursController::update()
 elseif(preg_match('/^\/hours/',$ru)) { CustomerHoursController::index(); }
 
 elseif(preg_match('/^\/users\/create/',$ru)) { UsersController::create(); }
-elseif(preg_match('/^\/users\/.+/',$ru)) { UsersController::show(); }
+elseif(preg_match('/^\/users\/destroy/',$ru)) { UsersController::destroy(); }
+elseif(preg_match('/^\/users\/update/',$ru)) { UsersController::update(); }
+elseif(preg_match('/^\/users\/approve/',$ru)) { UsersController::approve(); }
+elseif(preg_match('/^\/users\?u=.+/',$ru)) { UsersController::show(); }
 elseif(preg_match('/^\/users/',$ru)) { UsersController::index();  }
 //elseif(preg_match('/^\/users\/u\/.*/',$ru)) { UsersController::show();}
 
@@ -39,7 +42,7 @@ elseif(preg_match('/^\/workhours\/create/',$ru)) { WorkHoursController::create()
 elseif(preg_match('/^\/workhours\/destroy/',$ru)) { WorkHoursController::destroy();}
 elseif(preg_match('/^\/workhours\/update/',$ru)) { WorkHoursController::update();}
 
-elseif(preg_match('/^\/report/',$ru)) { Report::render();  }
+elseif(preg_match('/^\/report/',$ru)) { Report::index();  }
 elseif(preg_match('/^\/test/',$ru)) { require 'connectionTest.php';  }
 elseif(preg_match('/^\//', $ru)) { LoginController::render(); }
 else{ echo "404";}

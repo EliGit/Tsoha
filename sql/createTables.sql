@@ -15,7 +15,7 @@ CREATE TABLE customerHour (
 CREATE TABLE user (
 	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(16),
-	password BINARY(32), #SHA-256 compatible
+	password VARCHAR(32), #SHA-256 compatible
 	firstname VARCHAR(32),
 	lastname VARCHAR(32),
 	address VARCHAR(128),
@@ -27,7 +27,7 @@ CREATE TABLE user (
 #ilman kommentteja
 CREATE TABLE user (
 	username VARCHAR(16) NOT NULL PRIMARY KEY,
-	password BINARY(32) NOT NULL,  
+	password VARCHAR(32) NOT NULL,  
 	firstname VARCHAR(32),
 	lastname VARCHAR(32),
 	address VARCHAR(128),

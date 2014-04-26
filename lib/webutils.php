@@ -33,10 +33,8 @@ function redirect($url, $getParams='' ,$statusCode = 303)
 {
 	if(empty($getParams)){ 		
 		header('Location: ' . $url , true, $statusCode); }
-	else {
-		$data = array($getParams[0]=>$getParams[1]);
-		$params = http_build_query($data);
-		header('Location: ' . $url . '?' . $params, true, $statusCode);
+	else {		
+		header('Location: ' . $url . '?' . http_build_query($getParams), true, $statusCode);
 	}
    	die();
 }

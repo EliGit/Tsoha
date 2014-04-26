@@ -1,7 +1,12 @@
+<h1>Käyttäjät</h1>
 
+<p>Ohjelman käyttäjät ja heidän tietonsa - tiedot ovat käyttäjiensä itse päivittämiä.</p>
 
-<div class="container">
-	<h1>Käyttäjät</h1>
+<?if($_SESSION['rank']==1) { ?> 
+<p>ADMIN: Tästä pääsee yksittäisten käyttäjien sivuille. Huomioithan, että et silti pääse muuttamaan käyttäjien tietoja tai työtunteja. Voit kuitenkin poistaa käyttäjiä. </p>
+<?} ?>
+
+<div class="container">	
 	<table class="table table-striped">
 		<tr>
 			<th>Username</th>
@@ -9,7 +14,7 @@
 			<th>Address</th>
 			<th>Email</th>
 			<th>Phone</th>
-			<th>Edit</th>
+			<?if($_SESSION['rank']==1) { echo '<th>Edit</th>'; } ?>
 		</tr>
 	<? foreach ($data->lista as $h) { ?>
 		<tr class="">
@@ -18,12 +23,15 @@
 			<td><?echo $h['address']?></td>
 			<td><?echo $h['email']?></td>
 			<td><?echo $h['phone']?></td>			
-			<td><a href="/users/<?echo $h['username']?>"><button type="button" class="btn btn-danger">x</button></a></td>			
+			<?if($_SESSION['rank']==1) { ?> 
+				<td><a href="/users?u=<?echo $h['username']?>"><button type="button" class="btn btn-danger">x</button></a></td>
+			<?} ?>
 		</tr>	
 	<? } ?>
 	</table>
 </div>
 
+<?if($_SESSION['rank']==1) { ?> 
 <hr>
 <div class= "container">
 	<form class="form-inline" role="form" action="/users/create" method="post">
@@ -40,3 +48,4 @@
 	  <button type="submit" class="btn btn-default">Lisää käyttäjä</button>
 	</form>
 </div>
+<?} ?>

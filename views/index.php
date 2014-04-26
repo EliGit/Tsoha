@@ -1,4 +1,4 @@
-<?if(isset($data->notice)){ ?>
+<?if(!isset($_SESSION["user"])){ ?>
 	<div class="col-sm-6">
 		<form class="form-horizontal" role="form" action="/login/" method="POST">
 		  <div class="form-group">

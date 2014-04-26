@@ -18,8 +18,9 @@ class CustomerHours{
 		global $db;
 
 		foreach ($users as $u) {			
-			$q = "INSERT INTO customerHourWorkers SET customerHour_id=".$db->quote($id).",user_id=".$db->quote($u);
-			if(!$db->insertQuery($q)){
+			$q = "INSERT INTO customerHourWorkers SET customerHour_id=?,user_id=?";
+			$params = array($id, $u);
+			if(!$db->insertQuery($q, $params)){
 				return false;
 			}
 		}
@@ -30,11 +31,12 @@ class CustomerHours{
 		global $db;
 		$sql = "SELECT * FROM customerHour";
 
-		$hours = $db->query($sql);
+		$hours = $db->query($sql, null); //no params
 
 		$sql = "SELECT * FROM customerHourWorkers";
-		$workers = $db->query($sql);
+		$workers = $db->query($sql, null); //no params
 
+		//add workers to their corresponding customerHour
 		foreach ($hours as &$h) {
 			$h['people']=array();
 			foreach ($workers as $w) {
@@ -55,11 +57,9 @@ class CustomerHours{
 
 
 		//create customerHour entry
-		$q = "INSERT INTO customerHour SET day="
-				.$db->quote($day).",customer=".$db->quote($customer)
-				.",description=".$db->quote($description)
-				.",hours=".$db->quote($hours).",offhours=".$db->quote($offhours).",billed='0'";
-		$db->insertQuery($q);
+		$q = "INSERT INTO customerHour SET day=?,customer=?,description=?,hours=?,offhours=?,billed='0'";
+		$params = array($day, $customer, $description, $hours, $offhours);
+		$db->insertQuery($q, $params);
 		
 		
 		//create customerHourWorker entries		
@@ -70,8 +70,9 @@ class CustomerHours{
 
 	public static function delete_hour($id){
 		global $db;
-		$q = "DELETE FROM customerHour WHERE id=$id";
-		return $db->insertQuery($q);
+		$q = "DELETE FROM customerHour WHERE id=?";
+		$params = array($id);
+		return $db->insertQuery($q, $params);
 	}
 
 
@@ -85,8 +86,9 @@ class CustomerHours{
 		
 
 		//find current workers
-		$sql = "SELECT user_id FROM customerHourWorkers WHERE customerHour_id=".$db->quote($id);
-		$workers = $db->query($sql);
+		$sql = "SELECT user_id FROM customerHourWorkers WHERE customerHour_id=?";
+		$params = array($id);
+		$workers = $db->query($sql, $params);
 
 		//add if needed
 		foreach ($users as $u) {
@@ -100,17 +102,28 @@ class CustomerHours{
 		//remove if needed
 		foreach ($workers as $w) {
 			if(!in_array($w['user_id'], $users)){				
-				$sql = "DELETE FROM customerHourWorkers WHERE customerHour_id=".$db->quote($id)." AND user_id=" . $db->quote($w['user_id']);
-				$bool = $db->insertQuery($sql);
+				$sql = "DELETE FROM customerHourWorkers WHERE customerHour_id=? AND user_id=?";
+				$params = array($id, $w['user_id']);
+				$bool = $db->insertQuery($sql, $params);
 			}
 		}
 
 		//update customerHour normally
-		$q = "UPDATE customerHour SET day=".$db->quote($day).",customer=".$db->quote($customer)
-				.",description=".$db->quote($description)
-				.",hours=".$db->quote($hours).",offhours=".$db->quote($offhours).",billed=".$db->quote($billed)
-				." WHERE id=".$db->quote($id);
-		return $db->insertQuery($q);
+		$q = "UPDATE customerHour SET day=?,customer=?,description=?,hours=?,offhours=?,billed=? WHERE id=?";
+		$params = array($day, $customer, $description, $hours, $offhours, $billed, $id);
+		return $db->insertQuery($q, $params);
+	}
+
+	public static function allowUpdate($user, $customerHourID){
+		global $db;
+
+		$q = "select 1 from customerHourWorkers WHERE customerHour_id=? AND user_id=? LIMIT 1";
+		$params = array($customerHourID, $user);
+
+		$result = $db->query($q, $params);
+		//echo $user;
+		//var_dump($result);
+		return count($result)==1;
 	}
 
 }

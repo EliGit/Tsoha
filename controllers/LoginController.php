@@ -4,9 +4,10 @@ class LoginController{
 		require 'models/UserModel.php';
 		if(User::authenticate($_POST["username"], $_POST["password"])){
 			$_SESSION["user"] = $_POST["username"];
-			redirect('/', array("login", "success"));
+			$_SESSION["rank"] = User::getRank($_POST["username"]);
+			redirect('/', array("login" => "success"));
 		} 
-		redirect('/', array("login", "failed"));
+		redirect('/', array("login" => "failed"));
 	}
 
 	public static function logout(){

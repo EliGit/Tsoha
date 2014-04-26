@@ -1,4 +1,12 @@
 <h1>Asiakkaille laskutettavat tunnit</h1>
+
+<p>Merkkaa tänne asiakkaille laskutettavat tunnit. Huomioithan, että käyttäjä voi muokata vain sellaisia tunteja, joissa hän itse on mukana tekijänä.
+	Tekijät erotellaan pilkulla ja ohjelma tarkistaa, että kaikki tekijät ovat varmasti käyttäjiä ohjelmassa (muutkin syötteet validoidaan).</p>
+
+<?if($_SESSION['rank']==1) { ?> 
+	<p>ADMIN: Täydet CRUD oikeudet. </p>
+<?} ?>
+
 <div>
 	<table class="table table-striped">
 		<!--Table headers -->
@@ -59,12 +67,12 @@
 		<!--Table input row -->
 		<tr>
 			<form action="/hours/add" method="post">
-				<td><input type="text" name="day" value="<?echo $data->uparams[0];?>" class="form-control" size="10" /></td>
-				<td><input type="text" name="customer" value="<?echo $data->uparams[1];?>" size="20" class="form-control"/></td>
-				<td><input type="text" name="people" value="<?echo $data->uparams[2];?>" size="10" class="form-control"/></td>
-				<td><input type="text" name="description" size="40" value="<?echo $data->uparams[3];?>" class="form-control"/></td>
-				<td><input type="text" name="hours" value="<?echo $data->uparams[4];?>" size="2" class="form-control"/></td>
-				<td><input type="text" name="offhours" value="<?echo $data->uparams[5];?>" size="2" class="form-control"/></td>
+				<td><input type="text" name="day" value="<?echo $data->uparams['day'];?>" class="form-control" size="10" /></td>
+				<td><input type="text" name="customer" value="<?echo $data->uparams['customer'];?>" size="20" class="form-control"/></td>
+				<td><input type="text" name="people" value="<?echo $data->uparams['people'];?>" size="10" class="form-control"/></td>
+				<td><input type="text" name="description" size="40" value="<?echo $data->uparams['description'];?>" class="form-control"/></td>
+				<td><input type="text" name="hours" value="<?echo $data->uparams['hours'];?>" size="2" class="form-control"/></td>
+				<td><input type="text" name="offhours" value="<?echo $data->uparams['offhours'];?>" size="2" class="form-control"/></td>
 				<td><button type="submit" class="btn btn-success">Submit</button></td>			
 				<td></td>
 			</form>
@@ -99,6 +107,7 @@
 			</form>
 	      </div>
 	      <div class="modal-footer">
+	      	<?if($_SESSION['rank']==1) { ?>
 	      	<form class="form-inline" action="/hours/destroy" method="post">	      		
 	      		<div class="form-group">
     				<label class="sr-only" for="exampleInputPassword2">Password</label>
@@ -107,7 +116,7 @@
   				<input type="hidden" name="hiddenID" id="hiddenID_destroy" />
 	      		<button type="submit" class="btn btn-danger">Delete</button>	        	
       		</form>
-      		<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+      		<? } ?>
 	        
 	      </div>
 	    </div>

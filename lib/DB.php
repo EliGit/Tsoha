@@ -23,10 +23,12 @@ class DB{
 		return $this->conn;
 	}
 
-	public function query($sql){		
+	public function query($sql, $params){		
 		$query = $this->getConn()->prepare($sql);
-		$query->execute();
+		$query->execute($params);
 
+		
+		//each row as array(column => row[col], col => row[col2])
 		$tulokset = array();
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $result) {
 			$tulokset[] = $result;
@@ -34,9 +36,9 @@ class DB{
 		return $tulokset;
 	}
 
-	public function insertQuery($sql){
+	public function insertQuery($sql, $params){
 		$query = $this->getConn()->prepare($sql);
-		return $query->execute();
+		return $query->execute($params);
 	}
 
 	public function quote($str) {
