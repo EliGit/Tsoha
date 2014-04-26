@@ -1,32 +1,6 @@
 <?php
 class CustomerHours{
 
-	private static function validatePeople($people){
-
-		$users = explode(",", $people);
-		$users_in_db = User::getUserNames();
-
-		foreach ($users as $u) {
-			if(!in_array(array("username"=>$u), $users_in_db, true)){
-				return false;
-			}
-		}
-		return $users;
-	}
-
-	private static function addWorkHourUsers($users, $id){
-		global $db;
-
-		foreach ($users as $u) {			
-			$q = "INSERT INTO customerHourWorkers SET customerHour_id=?,user_id=?";
-			$params = array($id, $u);
-			if(!$db->insertQuery($q, $params)){
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public static function get_all() {
 		global $db;
 		$sql = "SELECT * FROM customerHour";
@@ -48,7 +22,7 @@ class CustomerHours{
 		return $hours;
 	}
 
-	public static function add_hours($day, $customer, $people, $description, $hours, $offhours) {
+	public static function create_hour($day, $customer, $people, $description, $hours, $offhours) {
 		global $db;
 		
 		//validate people
@@ -90,7 +64,7 @@ class CustomerHours{
 		$params = array($id);
 		$workers = $db->query($sql, $params);
 
-		//add if needed
+		//add workers to customerHour if needed
 		foreach ($users as $u) {
 			if(!in_array( array("user_id" => $u), $workers)){
 				if(!CustomerHours::addWorkHourUsers(array($u), $id)){
@@ -99,7 +73,7 @@ class CustomerHours{
 			}
 		}
 
-		//remove if needed
+		//remove workers from customerHour if needed
 		foreach ($workers as $w) {
 			if(!in_array($w['user_id'], $users)){				
 				$sql = "DELETE FROM customerHourWorkers WHERE customerHour_id=? AND user_id=?";
@@ -114,6 +88,7 @@ class CustomerHours{
 		return $db->insertQuery($q, $params);
 	}
 
+	//allowUpdate only if user is a worker in specified customerHour(ID)
 	public static function allowUpdate($user, $customerHourID){
 		global $db;
 
@@ -121,9 +96,38 @@ class CustomerHours{
 		$params = array($customerHourID, $user);
 
 		$result = $db->query($q, $params);
-		//echo $user;
-		//var_dump($result);
+		
 		return count($result)==1;
+	}
+
+	/*
+	*	HELPERS
+	*/
+	private static function validatePeople($people){
+
+		$users = explode(",", $people);
+		$users_in_db = User::getUserNames();
+
+		foreach ($users as $u) {
+			//users_in_db must contain "username"=>$u (query result of the form array("col" => "row[col]"...))
+			if(!in_array(array("username"=>$u), $users_in_db, true)){
+				return false;
+			}
+		}
+		return $users;
+	}	
+
+	private static function addWorkHourUsers($users, $id){
+		global $db;
+
+		foreach ($users as $u) {			
+			$q = "INSERT INTO customerHourWorkers SET customerHour_id=?,user_id=?";
+			$params = array($id, $u);
+			if(!$db->insertQuery($q, $params)){
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

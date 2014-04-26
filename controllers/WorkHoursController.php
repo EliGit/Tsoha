@@ -1,7 +1,7 @@
 <?php
 require './models/WorkHourModel.php';
 class WorkHoursController{
-  
+  	//!! This controller often redirects to /users as this is where WorkHours are rendered to user
 
    /*
    	*	CREATE 
@@ -12,9 +12,10 @@ class WorkHoursController{
   		//don't allow adding hours to other users 
   		if($_SESSION['user']!=$p['usr']){ redirect("/users", array("u" => $p['usr'], "notice" => "can't add hours to other users")); }
 
+  		//validate params -> render&exit if invalid
 		WorkHoursController::validateParams($p);
 
-        if(WorkHour::add_hour($p['day'], $p['hour1'], $p['hour2'], $p['hour3'], $p['usr'])){
+        if(WorkHour::addWorkHour($p['day'], $p['hour1'], $p['hour2'], $p['hour3'], $p['usr'])){
         	redirect("/users", array("u" => $_SESSION['user'], "notice" => "created successfully"));
         }
         //redirect to users?u=username if db rejects create
@@ -31,10 +32,11 @@ class WorkHoursController{
 		//don't allow updating other users' hours. 
 		if($_SESSION['user']!=$p['usr']){ redirect("/users", array("u" => $p['usr'], "notice" => "can't update hours of other users")); }
 
+		//validate params -> render&exit if invalid
 		WorkHoursController::validateParams($p);
 
 		//update also checks that the id and username match, so changing the hidden user parameter does not allow malicious activity
-        if(WorkHour::update_hour($id, $p['day'], $p['hour1'], $p['hour2'], $p['hour3'], $p['usr'])){
+        if(WorkHour::updateWorkHour($id, $p['day'], $p['hour1'], $p['hour2'], $p['hour3'], $p['usr'])){
         	redirect("/users", array("u" => $_SESSION['user'], "notice" => "update success"));	
         }
         //redirect to users?u=username if db rejects update
@@ -46,15 +48,15 @@ class WorkHoursController{
    	*	DESTROY
   	*/
 	public static function destroy() {
-		$id = in('post', 'hiddenID');
-		$user = in('post', 'user');
-		$psswd = in('post', 'password');
+		$id = htmlspecialchars(in('post', 'hiddenID'));
+		$user = htmlspecialchars(in('post', 'user'));
+		$psswd = htmlspecialchars(in('post', 'password'));
 
 		if($_SESSION['user']!=$user){ redirect("/users", array("u" => $user, "notice" => "can't destroy hours of other users")); }
 
 		if(User::authenticate($_SESSION['user'], $psswd)){
 			//destroy also checks that the id and username match, so changing the hidden user parameter does not allow malicious activity
-			if(WorkHour::delete_hour($id, $user)) {
+			if(WorkHour::destroyWorkHour($id, $user)) {
 				redirect("/users", array("u" => $_SESSION['user'], "notice" => "destroy success"));
 			}	
 			redirect("/users", array("u" => $_SESSION['user'], "notice" => "db rejected destroy"));
@@ -67,11 +69,11 @@ class WorkHoursController{
   	*/
 
 	private static function params() {
-		$d = in('post', 'day');
-        $h1 = in('post', 'hours');
-        $h2 = in('post', 'offhours');
-        $h3 = in('post', 'standbyhours');
-        $u = in('post', 'user');
+		$d = in('post', 'day'); //regex validation
+        $h1 = in('post', 'hours'); //must be numeric validation
+        $h2 = in('post', 'offhours'); //must be numeric validation
+        $h3 = in('post', 'standbyhours'); //must be numeric validation
+        $u = htmlspecialchars(in('post', 'user')); 
 
         return array("day" => $d, "hour1" => $h1, "hour2" => $h2,"hour3" => $h3, "usr" => $u);
 	}

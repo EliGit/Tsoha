@@ -2,7 +2,9 @@
 require './models/CustomerHoursModel.php';
 class CustomerHoursController{
 	
-	//"CONST"
+   /*
+   	*	"CONST" Default params are used to populate form fields with default values.
+  	*/
 	private static function DEFAULTPARAMS() {
 		return array('day' => date('Y-m-d'), 'customer' => "Customer's name", 'people' => $_SESSION['user'], 
 					'description' => "Short description",'hours' => 0,'offhours'=> 0);
@@ -25,9 +27,10 @@ class CustomerHoursController{
 	public static function create() {
 		$p = CustomerHoursController::params();
 
+		//validate, render&exit if invalid
 		CustomerHoursController::validateParams($p);
 
-		if(CustomerHours::add_hours($p['day'], $p['customer'], $p['people'], $p['description'], $p['hours'], $p['offhours'])){
+		if(CustomerHours::create_hour($p['day'], $p['customer'], $p['people'], $p['description'], $p['hours'], $p['offhours'])){
 			redirect('/hours/', array("notice" => "create success"));	
 		} 
 		CustomerHoursController::render(CustomerHoursController::DEFAULTPARAMS(), "rejected create, check users and inputs");
@@ -40,8 +43,10 @@ class CustomerHoursController{
 		if($_SESSION['rank']!=1) {
 			exit;	
 		}
-		$id = in('post', 'hiddenID');
-		$psswd = in('post', 'password');
+		
+		$id = htmlspecialchars(in('post', 'hiddenID'));
+		$psswd = htmlspecialchars(in('post', 'password'));
+
 		if(User::authenticate($_SESSION['user'],$psswd )){
 			if(CustomerHours::delete_hour($id)){
 				redirect('/hours/', array("notice" => "destroy success"));	
@@ -72,10 +77,9 @@ class CustomerHoursController{
 			$billed = 0;
 		}
 		
+		//validate, render&exit if invalid
 		CustomerHoursController::validateParams($p);
 
-
-					
 		$arr = array();
 		if(CustomerHours::update_hour($id, $p['day'], $p['customer'], $p['people'], $p['description'], $p['hours'], $p['offhours'], $billed)){			
 			redirect('/hours/', array("notice" =>"update success"));	

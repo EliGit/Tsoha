@@ -1,8 +1,7 @@
 <?php
-
 require 'CONFIG.php';
 class DB{
-	//Tietokannan tunnukset:
+	//db connection details from CONFIG.
 	private	$user = Config::DB_USER;
 	private	$passwd = Config::DB_PASSWORD;
 	private $host = Config::DB_HOST;
@@ -23,10 +22,12 @@ class DB{
 		return $this->conn;
 	}
 
+/*
+	query handles all SELECT queries and returns results in array(column => row[col], col => row[col2]) form.
+*/
 	public function query($sql, $params){		
 		$query = $this->getConn()->prepare($sql);
 		$query->execute($params);
-
 		
 		//each row as array(column => row[col], col => row[col2])
 		$tulokset = array();
@@ -36,31 +37,17 @@ class DB{
 		return $tulokset;
 	}
 
+/*
+	insertQuery handles all UPDATE, DELETE, INSERT queries
+*/
 	public function insertQuery($sql, $params){
 		$query = $this->getConn()->prepare($sql);
 		return $query->execute($params);
 	}
 
-	public function quote($str) {
-		return $this->conn->quote($str);
-	}
-
-
 	public function latestID(){
 		return $this->getConn()->lastInsertId();	
 	}
 	
-
-
-/*
-	public function query_hash($q) {
-		$r = $this->query($q);
-		$arr = array();
-		while($row = $r->fetchArray()) {
-			array_push($arr,$row);
-		}
-		return $arr;		
-	}
-*/
 
 }

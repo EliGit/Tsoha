@@ -21,11 +21,14 @@ class LoginController{
 
 	public static function render(){
 		$arr = array();
+		
+		//if login status set (failed or success), pass to view index.php to show to user
 		if(isset($_GET['login'])) $arr['login'] = $_GET['login'];
 
 		if(self::isLogged()) {			
 			render('index.php', $arr);
 		}else {			
+			//nog logged in -> tell user to log in
 			$arr["notice"] = "Log in !";
 			render('index.php', $arr);
 		}

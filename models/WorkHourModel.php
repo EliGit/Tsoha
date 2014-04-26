@@ -34,7 +34,7 @@ class WorkHour{
 		return $db->query($sql, $params);
 	}
 
-	public static function add_hour($day, $hours, $offhours, $standbyhours, $username) {
+	public static function addWorkHour($day, $hours, $offhours, $standbyhours, $username) {
 		global $db;
 
 		$q = "INSERT INTO workHour SET day=?,hours=?,offhours=?,standbyhours=?,username=?,approved=0";
@@ -44,7 +44,7 @@ class WorkHour{
 	}
 
 	
-	public static function delete_hour($id, $user){
+	public static function destroyWorkHour($id, $user){
 		global $db;
 		$q = "DELETE FROM workHour WHERE id=? AND username=?";
 		$params = array($id, $user);
@@ -52,7 +52,7 @@ class WorkHour{
 	}
 
 
-	public static function update_hour($id, $day, $hours, $offhours, $standbyhours, $username){
+	public static function updateWorkHour($id, $day, $hours, $offhours, $standbyhours, $username){
 		global $db;
 		
 		$q = "UPDATE workHour SET day=?,hours=?,offhours=?,standbyhours=? WHERE username=? AND id=?";
