@@ -1,1 +1,3 @@
-Helsingin Yliopisto Tietokantasovellus harjoitustyö. ks. doc/
+Helsingin Yliopisto Tietokantasovellus harjoitustyö. 
+
+Ohjelman URL ja käyttäjätunnukset ks. doc/dokumentaatio.pdf
